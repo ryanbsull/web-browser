@@ -6,6 +6,18 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+int http_request(const char* addr) {
+  int port = 80;
+  const char* req = "GET /\r\n";
+
+  struct hostent* server;
+  struct sockaddr_in serv_addr;
+  int sockfd, bytes, sent, received, total;
+  char msg[1024], resp[4096];
+
+  return 0;
+}
+
 int error(const char* msg) {
   perror(msg);
   exit(1);
