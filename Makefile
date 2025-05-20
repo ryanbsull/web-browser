@@ -3,9 +3,9 @@ CFLAGS = -lm -g
 SRC_FILES := $(wildcard src/*.c)
 OUTPUT_FILES := $(patsubst src/%.c,build/%.o,$(SRC_FILES))
 
-all: browse
+all: w-browse
 
-browse: $(OUTPUT_FILES) browser.c
+w-browse: $(OUTPUT_FILES) browser.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 build/%.o: src/%.c
@@ -13,5 +13,5 @@ build/%.o: src/%.c
 	$(CC) -g -c $^ -o $@ 
 
 clean:
-	rm -rf build/ browse
+	rm -rf build/ w-browse*
 
