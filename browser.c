@@ -31,11 +31,13 @@ int http_request(const char* addr) {
     error(err_msg);
   }
   int sockfd;
-
-  for (struct addrinfo* addr; addr != NULL; addr = addrs->ai_next) {
-    sockfd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
+  struct addrinfo* address = addrs->ai_next;
+  for (; address != NULL; address = address->ai_next) {
+    if (address->ai_family)
+      sockfd = socket(address->ai_family, address->ai_socktype,
+                      address->ai_protocol);
     if (sockfd == -1) continue;
-    if (connect(sockfd, addr->ai_addr, addr->ai_addrlen) == 0) break;
+    if (connect(sockfd, address->ai_addr, address->ai_addrlen) == 0) break;
     close(sockfd);
     freeaddrinfo(addrs);
     error("socket");
@@ -53,10 +55,6 @@ int http_request(const char* addr) {
 }
 
 int main(int argc, char* argv[]) {
-#if defined(__APPLE__)
-  error("MacOS");
-#endif
-
   if (argc != 2) error("ERROR: incorrect number of args");
   http_request(argv[1]);
   return 0;
