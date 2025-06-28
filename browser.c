@@ -1,3 +1,4 @@
+#include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
@@ -46,8 +47,10 @@ int http_request(const char* addr) {
   write(sockfd, req, strlen(req));
   bzero(resp, BUFFER_SIZE);
 
-  while (read(sockfd, resp, BUFFER_SIZE - 1) != 0) {
-    printf("%s", resp);
+  int fd = open("resp.html", O_CREAT | O_RDWR);
+  int len = 0;
+  while ((len = read(sockfd, resp, BUFFER_SIZE - 1)) != 0) {
+    write(fd, resp, len);
     bzero(resp, BUFFER_SIZE);
   }
 
