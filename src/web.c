@@ -44,11 +44,12 @@ int http_request(const char* addr) {
   bzero(resp, BUFFER_SIZE);
 
   int fd = open("resp.html", O_CREAT | O_RDWR);
-  int len = 0;
+  int len = 0, bytes = 0;
   while ((len = read(sockfd, resp, BUFFER_SIZE - 1)) != 0) {
+    bytes += len;
     write(fd, resp, len);
     bzero(resp, BUFFER_SIZE);
   }
 
-  return 0;
+  return bytes;
 }
