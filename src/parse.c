@@ -12,6 +12,8 @@ int get_body(char* resp, char** body) {
   char *start, *end;
   if ((start = strstr(resp, open))) {
     start += strlen(open);
+    while (start[0] != '>') start++;
+    start++;
     if ((end = strstr(start, close))) {
       *body = (char*)malloc(end - start + 1);
       memcpy(*body, start, end - start);

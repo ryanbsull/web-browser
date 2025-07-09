@@ -12,7 +12,6 @@
 #include "../include/web.h"
 
 int http_request(const char* addr) {
-  printf("GET: %s\n", addr);
   int port = 80, status;
   const char* req = "GET /\r\n";
   char resp[BUFFER_SIZE];
