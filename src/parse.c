@@ -4,7 +4,22 @@
 
 #include "../include/parse.h"
 
-int clean_scripts(char* resp, char** clean);
+static int clean_scripts(char* body) {
+  const char* open = "<script";
+  const char* close = "</script>";
+  int len = strlen(open);
+  if (len > 0) {
+    char* p = body;
+    size_t size = 0;
+    while ((p = strstr(p, open)) != NULL) {
+      p = strstr(p, close);
+      size = (size == 0) ? (p - body) + strlen(p + len) + 1 : size - len;
+      memmove(p, p + len, size - (p - body));
+    }
+  }
+  return 0;
+}
+
 int get_headers(char* resp, char** headers);
 int get_body(char* resp, char** body) {
   const char* open = "<body";
@@ -22,6 +37,7 @@ int get_body(char* resp, char** body) {
   }
 
   if (!*body) return 1;
+  if (clean_scripts(*body)) return 1;
 
   return 0;
 }
