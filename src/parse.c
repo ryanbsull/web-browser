@@ -20,7 +20,18 @@ static int clean_scripts(char* body) {
   return 0;
 }
 
-int get_headers(char* resp, char** headers);
+int get_headers(char* resp, char** headers) {
+  int size = 0;
+  while (resp[size + 1] != '<' && resp[size + 2] != '!') size++;
+  *headers = (char*)malloc(size + 1);
+  memcpy(*headers, resp, size);
+  (*headers)[size] = '\0';
+
+  if (!*headers) return 1;
+
+  return 0;
+}
+
 int get_body(char* resp, char** body) {
   const char* open = "<body";
   const char* close = "</body>";
@@ -37,7 +48,7 @@ int get_body(char* resp, char** body) {
   }
 
   if (!*body) return 1;
-  if (clean_scripts(*body)) return 1;
+  // if (clean_scripts(*body)) return 1;
 
   return 0;
 }
