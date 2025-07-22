@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
   int len = http_request(argv[1]);
   char *buffer = (char*)malloc(len), *body = NULL, *headers = NULL;
   int fd = open("resp.html", O_CREAT | O_RDWR);
-  if (read(fd, buffer, len) < 0g return 1;
+  if (read(fd, buffer, len) < 0) return 1;
   if (get_headers(buffer, &headers) || get_body(buffer, &body)) {
     printf("ERROR: could not parse response\n");
     return 1;
